@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
+import { sendGameData } from './api';
 
 const gridSize = 5;  // Sample 5x5 grid for demonstration
 const pairs = [
-  { color: 'red', start: [0, 0], end: [4, 4] },
-  { color: 'blue', start: [0, 1], end: [4, 3] },
-  { color: 'yellow', start: [1, 3], end: [3, 1] },
-  { color: 'green', start: [3, 0], end: [0, 2] },
+  { color: 'red', start: [1, 2], end: [1, 4] },
+  { color: 'blue', start: [0, 0], end: [2, 3] },
+  { color: 'yellow', start: [4,0], end: [2, 4] },
+  { color: 'green', start: [2, 2], end: [0, 4] },
   // Add more pairs as needed
 ];
 
