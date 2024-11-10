@@ -18,6 +18,11 @@ function App() {
   const [activeFlow, setActiveFlow] = useState(null); // Stores current flow being drawn
   const [moveCount, setMoveCount] = useState(0);
   const [isDragging, setIsDragging] = useState(false); // Track if dragging is active
+  const [timeSpent, setTimeSpent] = useState(0);
+  const [correctMoves, setCorrectMoves] = useState(0);
+  const [incorrectMoves, setIncorrectMoves] = useState(0);
+  const [isGameCompleted, setIsGameCompleted] = useState(false);
+
 
   // Initialize the grid with color pairs' start and end points
   const initializeGrid = () => {
@@ -32,7 +37,38 @@ function App() {
   // Call initializeGrid once when the app is mounted
   useEffect(() => {
     initializeGrid();
+    const timer = setInterval(() => {
+      setTimeSpent(prevTime => prevTime + 1);
+    }, 1000);
+
+    return () => clearInterval(timer);
   }, []);
+
+
+  const getPathForFlow = (color) => {
+    return []; // Replace with actual path logic
+  };
+  
+  const handleGameComplete = () => {
+    const gameData = {
+      user: 'user123',
+      gameStats: {
+        totalTime: timeSpent,
+        totalMoves: moveCount,
+        correctMoves: correctMoves,
+        incorrectMoves: incorrectMoves,
+        completed: isGameCompleted,
+      },
+      flows: pairs.map(pair => ({
+        color: pair.color,
+        start: pair.start,
+        end: pair.end,
+        path: getPathForFlow(pair.color),
+      })),
+    };
+
+    sendGameData(gameData);
+  };
 
   const handleCellDown = (row, col) => {
     const selectedPair = pairs.find(
@@ -88,6 +124,7 @@ function App() {
   const completeFlow = (flow) => {
     // Check if path completes a pair, update accordingly
     // Logic to finalize the flow and check if puzzle is solved
+
   };
 
   // Reset function to clear the grid
@@ -144,6 +181,7 @@ function App() {
         <p>Moves: {moveCount}</p>
       </div>
       <button onClick={resetGrid} style={{ padding: '10px', margin: '20px' }}>Reset</button>
+      <button onClick={handleGameComplete}>Finish Game</button>
     </div>
   );
 }
