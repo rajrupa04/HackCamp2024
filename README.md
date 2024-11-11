@@ -1,2 +1,3 @@
-# HackCamp2024
-## my first hackathon!!
+# SkillScope - self-discovery through data driven approaches
+
+### SkillScope is a cutting-edge, personalized learning assessment tool that goes beyond conventional learning style quizzes. By analyzing user interactions with an engaging puzzle task, SkillScope intelligently identifies a user’s unique learning style—be it analytical, creative, or a balanced blend. SkillScope offers tailored learning resources and targeted recommendations designed to amplify strengths and bridge gaps, guiding users toward the most effective pathways for personal and professional growth. Perfect for students who are unsure about their qualities or career path, SkillScope provides a dynamic, data-driven approach to self-discovery, making it easier to chart a skill-building journey that aligns with individual strengths and preferences
