@@ -45,9 +45,9 @@ function App() {
     const timer = setInterval(() => {
       setTimeSpent(prevTime => prevTime + 1);
     }, 1000);
-
+    console.log("isGameCompleted:", isGameCompleted);
     return () => clearInterval(timer);
-  }, []);
+  }, [isGameCompleted]);
 
 
 
@@ -95,7 +95,7 @@ function App() {
         setIsGameCompleted(true);
         // Trigger any end-of-game logic here, like showing a success message or triggering save to backend
         
-        handleGameComplete();
+        handleGameComplete(true);
       }
     }
     setActiveFlow(null);
@@ -159,31 +159,41 @@ function App() {
     return []; // Replace with actual path logic
   };
   
-  const handleGameComplete = async() => {
+  const handleGameComplete = async(isComplete = false) => {
     
     const gameData = {
         totalTime: timeSpent,
         totalMoves: moveCount,
         correctMoves: correctMoves,
         incorrectMoves: incorrectMoves,
-        completed: isGameCompleted,
+        completed: isComplete,
+        flows: pairs.map(pair => ({        
+          color: pair.color,        
+          start: pair.start,        
+          end: pair.end,        
+          path: getPathForFlow(pair.color),      
+        }))
     };
 
-    const result = await sendGameData(gameData);
+    console.log(JSON.stringify(gameData, null, 2));
+    try {
+      const response = await sendGameData(gameData);
 
-        if (result.success) {
-            navigate('/results', { 
-                state: { 
-                    assessment: result.assessment, 
-                    ...gameData 
-                }
-            });
-        } else {
-            setError(result.message || 'An error occurred');
+      //setAssessment(response.assessment);
+      //console.log('Assessment received:', response.assessment);
+      navigate('/results-page', { 
+        state: { 
+            assessment: response.assessment,
+            ...gameData
         }
+      });
+    } catch (err) {
+      setError('Error saving game data');
+    }
 
   };
 
+  
   // Reset function to clear the grid
   const resetGrid = () => {
     setMoveCount(0); // Reset move count

@@ -1,7 +1,13 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 
-function resultsPage() {
+function ResultsPage() {
+
+    const location = useLocation();
+    //eslint-disable-next-line
     const { assessment, timeTaken, moves, correctMoves, incorrectMoves, completed } = location.state || {};
+    //eslint-disable-next-line
+    console.log(location.state);
     return (
         <div>
             <h1>Game Results</h1>
@@ -20,4 +26,4 @@ function resultsPage() {
     );
 }
 
-export default resultsPage;
+export default ResultsPage;

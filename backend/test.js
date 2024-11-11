@@ -17,6 +17,10 @@ const textResponse = "I wanted the layout to prioritize green spaces and accessi
 app.post('/save-game', async (req, res) => {
     const gameData = req.body;
 
+    const actionsSummary = gameData.flows.map(flow => 
+      `Placed a ${flow.color} flow from ${flow.start} to ${flow.end}. Path: ${flow.path.length} steps.`
+    ).join(' ');
+
 
     // Now you don't have the long answer question anymore, but you can still use the game stats
     const { totalTime, totalMoves, correctMoves, incorrectMoves, completed } = gameData;

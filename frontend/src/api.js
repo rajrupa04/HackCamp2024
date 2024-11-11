@@ -11,7 +11,7 @@ export const sendGameData = async (gameData) => {
       const data = await response.json();
       console.log('learning style assessment: ', data.assessment);
       console.log('Game data saved successfully:', data);
-      
+      return data;
     } catch (error) {
       console.error('Error saving game data:', error);
     }
