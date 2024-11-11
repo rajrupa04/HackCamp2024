@@ -17,16 +17,31 @@ const textResponse = "I wanted the layout to prioritize green spaces and accessi
 app.post('/save-game', async (req, res) => {
     const gameData = req.body;
 
+    // Construct drag actions summary based on game data
+    const actionsSummary = gameData.flows.map(flow => 
+      `Placed a ${flow.color} flow from ${flow.start} to ${flow.end}. Path: ${flow.path.length} steps.`
+    ).join(' ');
+
+  
+
+    // Now you don't have the long answer question anymore, but you can still use the game stats
+    const { totalTime, totalMoves, correctMoves, incorrectMoves, completed } = gameData.gameStats;
+
     const prompt = `
-    The user has completed a puzzle with the following actions: ${dragActionsSummary}. //use final output for gameplay
-    Their response to an open-ended question is: "${textResponse}".
+    The user has completed a puzzle with the following actions: ${actionsSummary}.
+    Their game stats are as follows:
+    - Total time spent: ${totalTime} seconds
+    - Total moves: ${totalMoves}
+    - Correct moves: ${correctMoves}
+    - Incorrect moves: ${incorrectMoves}
+    - Game completed: ${completed ? "Yes" : "No"}
 
-    Assess the user’s approach and classify their learning style as one of the following:
-    - **Analytical**: Indicates a methodical, logic-driven, and efficiency-focused mindset.
-    - **Creative**: Indicates an imaginative, visually-focused, or experimental approach.
-    - **Balanced**: Used only if the user's actions and response demonstrate an equal blend of analytical and creative traits. This should be rare and only applied when clear evidence of both styles is present.
+    Based on their actions and game performance, classify the user’s learning style as one of the following:
+    - **Analytical**: A methodical, logic-driven, and efficiency-focused mindset.
+    - **Creative**: An imaginative, visually-focused, or experimental approach.
+    - **Balanced**: If both analytical and creative traits are equally evident.
 
-    Based on your analysis, identify the user’s style as either analytical, creative, or, if strongly justified, balanced. Then, provide targeted learning recommendations.
+    Provide a learning style classification and targeted recommendations based on their gameplay and performance.
     `;
 
     try {
@@ -34,7 +49,9 @@ app.post('/save-game', async (req, res) => {
         const assessment = result.response.text();
         
         // Send the assessment back to the frontend
+        console.log("before sending data back....")
         res.json({ assessment });
+        console.log("LETS GOOOOOOOOOOOOO YOU'RE SO GOOD")
       } catch (error) {
         console.error("Error generating content:", error);
         res.status(500).json({ error: "Failed to assess game data." });
