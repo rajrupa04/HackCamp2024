@@ -85,12 +85,14 @@ function App() {
 
   const handleCellUp = () => {
     if (activeFlow) {
-      completeFlow(activeFlow);
+      
       setMoveCount(prevCount => prevCount + 1); // Increment move count for completed flow
+      completeFlow(activeFlow);
       if (isPuzzleSolved()) {
         console.log('Puzzle solved!');
+        setIsGameCompleted(true);
         // Trigger any end-of-game logic here, like showing a success message or triggering save to backend
-        navigate('/results-page');
+        
         handleGameComplete();
       }
     }
@@ -156,6 +158,7 @@ function App() {
   };
   
   const handleGameComplete = () => {
+    navigate('/results-page');
     const gameData = {
       user: 'user123',
       gameStats: {
