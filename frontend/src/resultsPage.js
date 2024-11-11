@@ -5,7 +5,7 @@ function ResultsPage() {
 
     const location = useLocation();
     //eslint-disable-next-line
-    const { assessment, timeTaken, moves, correctMoves, incorrectMoves, completed } = location.state || {};
+    const { assessment, timeTaken, moves, correctMoves, incorrectMoves, completed, flows } = location.state || {};
     //eslint-disable-next-line
     console.log(location.state);
     return (

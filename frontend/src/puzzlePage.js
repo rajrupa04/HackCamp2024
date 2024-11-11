@@ -184,7 +184,7 @@ function App() {
       navigate('/results-page', { 
         state: { 
             assessment: response.assessment,
-            ...gameData
+            gameData
         }
       });
     } catch (err) {
