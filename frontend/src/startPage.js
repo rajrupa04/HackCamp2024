@@ -2,7 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import { Link } from 'react-router-dom';
 
-const intro = "yayaypyappyapyapyap";
+const intro = "Unlock your full potential with personalized career recommendations based on your unique learning style, skills, and interests. Our tool uses data-driven insights to guide you towards career opportunities that align with your strengths, growth potential, and personal aspirations. Whether you're exploring new career paths or looking to advance in your current field, we’ll help you navigate your journey with confidence and clarity.";
 
 function startPage() {
   return (

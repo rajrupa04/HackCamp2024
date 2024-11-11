@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './App.css';
 import { sendGameData } from './api';
 
@@ -23,6 +24,8 @@ function App() {
   const [incorrectMoves, setIncorrectMoves] = useState(0);
   const [isGameCompleted, setIsGameCompleted] = useState(false);
 
+  const navigate = useNavigate();
+
 
   // Initialize the grid with color pairs' start and end points
   const initializeGrid = () => {
@@ -45,30 +48,6 @@ function App() {
   }, []);
 
 
-  const getPathForFlow = (color) => {
-    return []; // Replace with actual path logic
-  };
-  
-  const handleGameComplete = () => {
-    const gameData = {
-      user: 'user123',
-      gameStats: {
-        totalTime: timeSpent,
-        totalMoves: moveCount,
-        correctMoves: correctMoves,
-        incorrectMoves: incorrectMoves,
-        completed: isGameCompleted,
-      },
-      flows: pairs.map(pair => ({
-        color: pair.color,
-        start: pair.start,
-        end: pair.end,
-        path: getPathForFlow(pair.color),
-      })),
-    };
-
-    sendGameData(gameData);
-  };
 
   const handleCellDown = (row, col) => {
     const selectedPair = pairs.find(
@@ -108,6 +87,12 @@ function App() {
     if (activeFlow) {
       completeFlow(activeFlow);
       setMoveCount(prevCount => prevCount + 1); // Increment move count for completed flow
+      if (isPuzzleSolved()) {
+        console.log('Puzzle solved!');
+        // Trigger any end-of-game logic here, like showing a success message or triggering save to backend
+        navigate('/results-page');
+        handleGameComplete();
+      }
     }
     setActiveFlow(null);
     setIsDragging(false); // Stop dragging
@@ -122,9 +107,73 @@ function App() {
   };
 
   const completeFlow = (flow) => {
+    // Find the start and end pair for the flow color
+    const pair = pairs.find(p => p.color === flow.color);
+    if (!pair) return;
+
+    // Check if the path ends at the correct endpoint
+    const lastCell = flow.path[flow.path.length - 1];
+    const isFlowComplete = (lastCell[0] === pair.end[0] && lastCell[1] === pair.end[1]);
+
+    if (isFlowComplete) {
+      console.log(`${flow.color} flow completed`);
+      // Add any other logic to mark the flow as complete
+      // For example, store it in a completed flows array or mark it as complete in state
+    } else {
+      console.log(`${flow.color} flow is incomplete`);
+    }
     // Check if path completes a pair, update accordingly
     // Logic to finalize the flow and check if puzzle is solved
 
+  };
+
+  const isPuzzleSolved = () => {
+    // Check if all pairs are connected correctly
+    for (const pair of pairs) {
+      const startColor = grid[pair.start[0]][pair.start[1]];
+      const endColor = grid[pair.end[0]][pair.end[1]];
+  
+      // Check if start and end points are connected with the correct color path
+      if (!startColor || startColor !== endColor) {
+        return false;
+      }
+    }
+  
+    // Optionally, check that there are no empty cells if that's part of the puzzle rules
+    for (let row = 0; row < grid.length; row++) {
+      for (let col = 0; col < grid[row].length; col++) {
+        if (!grid[row][col]) {
+          return false;
+        }
+      }
+    }
+  
+    return true; // If all pairs are connected and grid is filled, puzzle is solved
+  };
+
+  const getPathForFlow = (color) => {
+    return []; // Replace with actual path logic
+  };
+  
+  const handleGameComplete = () => {
+    const gameData = {
+      user: 'user123',
+      gameStats: {
+        totalTime: timeSpent,
+        totalMoves: moveCount,
+        correctMoves: correctMoves,
+        incorrectMoves: incorrectMoves,
+        completed: isGameCompleted,
+      },
+      flows: pairs.map(pair => ({
+        color: pair.color,
+        start: pair.start,
+        end: pair.end,
+        path: getPathForFlow(pair.color),
+      })),
+    };
+
+    sendGameData(gameData);
   };
 
   // Reset function to clear the grid
@@ -181,7 +230,8 @@ function App() {
         <p>Moves: {moveCount}</p>
       </div>
       <button onClick={resetGrid} style={{ padding: '10px', margin: '20px' }}>Reset</button>
-      <button onClick={handleGameComplete}>Finish Game</button>
+      <button onClick={handleGameComplete} 
+        style={{ padding: '10px', margin: '20px' }}>Finish Game</button>
     </div>
   );
 }
