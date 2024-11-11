@@ -41,7 +41,11 @@ app.post('/save-game', async (req, res) => {
     - **Creative**: An imaginative, visually-focused, or experimental approach.
     - **Balanced**: If both analytical and creative traits are equally evident.
 
-    Provide a learning style classification and targeted recommendations based on their gameplay and performance.
+    Return the output in JSON format with the following structure:
+    {
+      "learningStyle": "<classification as either 'Analytical', 'Creative', or 'Balanced'>",
+      "recommendations": "<a concise, targeted recommendation to support the user's learning style based on their gameplay and performance>"
+    }
     `;
 
     try {
