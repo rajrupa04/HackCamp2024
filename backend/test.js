@@ -39,12 +39,11 @@ app.post('/save-game', async (req, res) => {
     - **Creative**: An imaginative, visually-focused, or experimental approach.
     - **Balanced**: If both analytical and creative traits are equally evident.
 
-    Return the output in JSON format with the following structure:
-    {
-      "learningStyle": "<classification as either 'Analytical', 'Creative', or 'Balanced'>",
-      "recommendations": "<a concise, targeted recommendation to support the user's learning style based on their gameplay and performance>"
-    }
-    `;
+    Provide a well-structured paragraph summarizing the user’s learning style as either analytical, creative,
+     or balanced. Describe why this classification was chosen, based on their actions and game performance, 
+     and include targeted recommendations to support their learning style. Phrase the response as though you
+     were talking to the user.`
+     ;
 
     try {
         const result = await model.generateContent(prompt);

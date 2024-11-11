@@ -1,16 +1,22 @@
 import React from 'react';
+import './App.css';
 import { useLocation } from 'react-router-dom';
 
 function ResultsPage() {
 
     const location = useLocation();
     //eslint-disable-next-line
-    const { assessment, timeTaken, moves, correctMoves, incorrectMoves, completed, flows } = location.state || {};
+    const { assessment, timeTaken, moves, correctMoves, incorrectMoves, completed } = location.state || {};
     //eslint-disable-next-line
     console.log(location.state);
     return (
         <div>
-            <h1>Game Results</h1>
+            <header className = "App-header">
+                <p>
+                    <strong>Puzzle Results</strong>
+                </p>
+            </header>
+            <header className = "App-text">
             {completed ? (
                 <>
                     <p>Learning Style Assessment: {assessment}</p>
@@ -22,6 +28,7 @@ function ResultsPage() {
             ) : (
                 <p>No data available.</p>
             )}
+            </header>
         </div>
     );
 }

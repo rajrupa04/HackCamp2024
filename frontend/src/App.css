@@ -1,9 +1,14 @@
 .App {
+  background-color: #cfe1f7;
   text-align: center;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
 }
 
 .App-logo {
-  height: 40vmin;
+  height: 30vmin;
   pointer-events: none;
 }
 
@@ -33,6 +38,7 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: rgb(30, 65, 116);
+  padding: 30px;
 }
 
 .center-button {

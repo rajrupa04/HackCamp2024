@@ -1,4 +1,4 @@
-import logo from './logo.svg';
+import logo from './bearcute.png';
 import './App.css';
 import { Link } from 'react-router-dom';
 
@@ -11,7 +11,7 @@ function startPage() {
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <p>
-            <strong>Skill Scope</strong>
+            <strong>SkillScope</strong>
           </p>
         </header>
         
@@ -24,7 +24,7 @@ function startPage() {
             </p>
             <Link to="/puzzle-page">
                 <button className = "center-button">
-                    Lets go
+                    Let's go
                 </button>
             </Link>
         </header>

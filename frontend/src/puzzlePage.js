@@ -184,7 +184,11 @@ function App() {
       navigate('/results-page', { 
         state: { 
             assessment: response.assessment,
-            gameData
+            timeTaken: gameData.totalTime,
+            moves: gameData.totalMoves,
+            correctMoves: gameData.correctMoves,
+            incorrectMoves: gameData.incorrectMoves,
+            completed: gameData.completed
         }
       });
     } catch (err) {
