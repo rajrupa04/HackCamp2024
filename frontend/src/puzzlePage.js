@@ -26,6 +26,8 @@ function App() {
 
   const navigate = useNavigate();
 
+  const [error, setError] = useState(null);
+
 
   // Initialize the grid with color pairs' start and end points
   const initializeGrid = () => {
@@ -157,26 +159,29 @@ function App() {
     return []; // Replace with actual path logic
   };
   
-  const handleGameComplete = () => {
-    navigate('/results-page');
+  const handleGameComplete = async() => {
+    
     const gameData = {
-      user: 'user123',
-      gameStats: {
         totalTime: timeSpent,
         totalMoves: moveCount,
         correctMoves: correctMoves,
         incorrectMoves: incorrectMoves,
         completed: isGameCompleted,
-      },
-      flows: pairs.map(pair => ({
-        color: pair.color,
-        start: pair.start,
-        end: pair.end,
-        path: getPathForFlow(pair.color),
-      })),
     };
 
-    sendGameData(gameData);
+    const result = await sendGameData(gameData);
+
+        if (result.success) {
+            navigate('/results', { 
+                state: { 
+                    assessment: result.assessment, 
+                    ...gameData 
+                }
+            });
+        } else {
+            setError(result.message || 'An error occurred');
+        }
+
   };
 
   // Reset function to clear the grid
