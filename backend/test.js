@@ -1,8 +1,11 @@
 // const { GoogleGenerativeAI } = require("@google/generative-ai");
+import cors from "cors";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import express from "express";
 const app = express();
 app.use(express.json());
+
+app.use(cors())
 
 console.log(GoogleGenerativeAI);
 
