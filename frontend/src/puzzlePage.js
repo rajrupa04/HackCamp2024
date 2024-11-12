@@ -3,22 +3,22 @@ import { useNavigate } from 'react-router-dom';
 import './App.css';
 import { sendGameData } from './api';
 
-const gridSize = 5;  // Sample 5x5 grid for demonstration
+const gridSize = 5;  
 const pairs = [
   { color: 'red', start: [1, 2], end: [1, 4] },
   { color: 'blue', start: [0, 0], end: [2, 3] },
   { color: 'yellow', start: [4,0], end: [2, 4] },
   { color: 'green', start: [2, 2], end: [0, 4] },
-  // Add more pairs as needed
+
 ];
 
 function App() {
   const [grid, setGrid] = useState(
     Array.from({ length: gridSize }, () => Array(gridSize).fill(null))
   );
-  const [activeFlow, setActiveFlow] = useState(null); // Stores current flow being drawn
+  const [activeFlow, setActiveFlow] = useState(null); 
   const [moveCount, setMoveCount] = useState(0);
-  const [isDragging, setIsDragging] = useState(false); // Track if dragging is active
+  const [isDragging, setIsDragging] = useState(false); 
   const [timeSpent, setTimeSpent] = useState(0);
   const [correctMoves, setCorrectMoves] = useState(0);
   const [incorrectMoves, setIncorrectMoves] = useState(0);
@@ -33,13 +33,13 @@ function App() {
   const initializeGrid = () => {
     const newGrid = grid.map(row => row.slice());
     pairs.forEach(pair => {
-      newGrid[pair.start[0]][pair.start[1]] = pair.color; // Set start point
-      newGrid[pair.end[0]][pair.end[1]] = pair.color; // Set end point
+      newGrid[pair.start[0]][pair.start[1]] = pair.color; 
+      newGrid[pair.end[0]][pair.end[1]] = pair.color; 
     });
     setGrid(newGrid);
   };
 
-  // Call initializeGrid once when the app is mounted
+  
   useEffect(() => {
     initializeGrid();
     const timer = setInterval(() => {
@@ -58,25 +58,25 @@ function App() {
     );
     if (selectedPair) {
       setActiveFlow({ color: selectedPair.color, path: [[row, col]] });
-      setIsDragging(true); // Start dragging
+      setIsDragging(true); 
     }
   };
 
   const handleCellOver = (row, col) => {
-    if (!activeFlow || !isDragging) return;  // Only update during dragging
+    if (!activeFlow || !isDragging) return;  
 
-    // Avoid adding duplicate cells to the path
+    
     const lastCell = activeFlow.path[activeFlow.path.length - 1];
 
     // Only add the cell to the path if it is adjacent to the last cell
     if (
-      (Math.abs(lastCell[0] - row) === 1 && lastCell[1] === col) ||  // Adjacent in row
-      (Math.abs(lastCell[1] - col) === 1 && lastCell[0] === row)     // Adjacent in column
+      (Math.abs(lastCell[0] - row) === 1 && lastCell[1] === col) ||  
+      (Math.abs(lastCell[1] - col) === 1 && lastCell[0] === row)     
     ) {
-      // Avoid adding the same cell again
+      
       if (lastCell[0] !== row || lastCell[1] !== col) {
         // Check if the cell is already colored
-        if (grid[row][col] !== null) return;  // Skip if the cell is already filled
+        if (grid[row][col] !== null) return; 
 
         const newPath = [...activeFlow.path, [row, col]];
         setActiveFlow({ ...activeFlow, path: newPath });
@@ -88,30 +88,29 @@ function App() {
   const handleCellUp = () => {
     if (activeFlow) {
       
-      setMoveCount(prevCount => prevCount + 1); // Increment move count for completed flow
+      setMoveCount(prevCount => prevCount + 1); 
       completeFlow(activeFlow);
       if (isPuzzleSolved()) {
         console.log('Puzzle solved!');
         setIsGameCompleted(true);
-        // Trigger any end-of-game logic here, like showing a success message or triggering save to backend
         
         handleGameComplete(true);
       }
     }
     setActiveFlow(null);
-    setIsDragging(false); // Stop dragging
+    setIsDragging(false); 
   };
 
   const updateGridPath = (path) => {
     const newGrid = grid.map(row => row.slice()); // Deep copy
     path.forEach(([row, col]) => {
-      newGrid[row][col] = activeFlow.color; // Set the cell to active flow color
+      newGrid[row][col] = activeFlow.color; 
     });
     setGrid(newGrid);
   };
 
   const completeFlow = (flow) => {
-    // Find the start and end pair for the flow color
+    
     const pair = pairs.find(p => p.color === flow.color);
     if (!pair) return;
 
@@ -121,13 +120,11 @@ function App() {
 
     if (isFlowComplete) {
       console.log(`${flow.color} flow completed`);
-      // Add any other logic to mark the flow as complete
-      // For example, store it in a completed flows array or mark it as complete in state
+      
     } else {
       console.log(`${flow.color} flow is incomplete`);
     }
-    // Check if path completes a pair, update accordingly
-    // Logic to finalize the flow and check if puzzle is solved
+   
 
   };
 
@@ -143,7 +140,6 @@ function App() {
       }
     }
   
-    // Optionally, check that there are no empty cells if that's part of the puzzle rules
     for (let row = 0; row < grid.length; row++) {
       for (let col = 0; col < grid[row].length; col++) {
         if (!grid[row][col]) {
@@ -152,7 +148,7 @@ function App() {
       }
     }
   
-    return true; // If all pairs are connected and grid is filled, puzzle is solved
+    return true; 
   };
 
   const getPathForFlow = (color) => {
@@ -200,16 +196,16 @@ function App() {
   
   // Reset function to clear the grid
   const resetGrid = () => {
-    setMoveCount(0); // Reset move count
-    setActiveFlow(null); // Clear the active flow
-    setIsDragging(false); // Stop dragging
-    // Manually reset the grid to the initial state
+    setMoveCount(0); 
+    setActiveFlow(null); 
+    setIsDragging(false); 
+    
     const newGrid = Array.from({ length: gridSize }, () => Array(gridSize).fill(null));
     pairs.forEach(pair => {
-      newGrid[pair.start[0]][pair.start[1]] = pair.color; // Set start point
-      newGrid[pair.end[0]][pair.end[1]] = pair.color; // Set end point
+      newGrid[pair.start[0]][pair.start[1]] = pair.color; 
+      newGrid[pair.end[0]][pair.end[1]] = pair.color; 
     });
-    setGrid(newGrid); // Set the grid state to the reset grid
+    setGrid(newGrid); 
   };
   
 

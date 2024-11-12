@@ -31,7 +31,7 @@
 
 .App-text {
   background-color: #cfe1f7;
-  min-height: 50vh;
+  min-height: 40;
   display: flex;
   flex-direction: column;
   align-items: center;

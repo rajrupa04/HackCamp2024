@@ -7,7 +7,7 @@ const intro = "Unlock your full potential with personalized career recommendatio
 function startPage() {
   return (
     <div>
-      <div className="App">
+      <div >
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <p>
@@ -17,7 +17,7 @@ function startPage() {
         
       </div>
       
-      <div className="App">
+      <div >
         <header className="App-text">
             <p>
             {intro}
